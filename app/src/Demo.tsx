@@ -1,5 +1,3 @@
-import { testFunction } from '@virtu-button/common';
-import { DEMO } from '@virtu-button/common/demo';
 import { useAtomValue } from 'jotai';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useMemo, useState } from 'react';
@@ -66,15 +64,6 @@ export function Demo() {
             >
               <MaterialIcon icon="settings" fill />
               編集モード
-            </Button>
-
-            <Button
-              onClick={() => {
-                testFunction();
-                console.log(DEMO);
-              }}
-            >
-              テスト
             </Button>
 
             <Popover>
