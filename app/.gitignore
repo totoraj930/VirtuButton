@@ -1,0 +1,9 @@
+node_modules
+release
+dist
+dist-*
+.env
+temp
+virtu-button-settings.json
+**/*.jpg
+**/*.webp

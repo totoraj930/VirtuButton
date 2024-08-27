@@ -1,0 +1,25 @@
+{
+  "name": "base",
+  "version": "0.0.1",
+  "description": "VirtuButtonのモノレポ",
+  "license": "MIT",
+  "private": true,
+  "author": "Reona Oshima(totoraj)",
+  "packageManager": "pnpm@9.9.0",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9",
+    "npm": "use pnpm please!",
+    "yarn": "use pnpm please!"
+  },
+  "scripts": {
+    "app": "pnpm -F ./app",
+    "common": "pnpm -F ./common"
+  },
+  "devDependencies": {
+    "electron": "^32.0.1",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.5.4"
+  }
+}

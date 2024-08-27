@@ -1,0 +1,22 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
+  "files.eol": "\n",
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "classList"],
+  "tailwindCSS.experimental.classRegex": [["/\\*tw\\*/ ([^;]*);", "'([^']*)'"]],
+  "workbench.editor.customLabels.patterns": {
+    "**/{page,layout,template,route,actions,hooks,components,utils,types}.{js,ts,jsx,tsx,md,mdx}": "${dirname}/${filename}.${extname}",
+    "**/{index}.{js,ts,jsx,tsx,md,mdx}": "${dirname}/${filename}.${extname}"
+  }
+}
