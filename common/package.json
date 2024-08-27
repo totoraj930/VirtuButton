@@ -16,5 +16,9 @@
   },
   "devDependencies": {
     "@material-symbols/font-400": "^0.21.2"
+  },
+  "dependencies": {
+    "ulid": "^2.3.0",
+    "zod": "^3.23.8"
   }
 }

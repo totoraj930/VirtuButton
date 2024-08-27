@@ -7,13 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      ulid:
-        specifier: ^2.3.0
-        version: 2.3.0
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
     devDependencies:
       electron:
         specifier: ^32.0.1
@@ -132,6 +125,9 @@ importers:
       ws:
         specifier: ^8.18.0
         version: 8.18.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@types/discord-rpc':
         specifier: ^4.0.8
@@ -192,6 +188,13 @@ importers:
         version: 2.2.1
 
   common:
+    dependencies:
+      ulid:
+        specifier: ^2.3.0
+        version: 2.3.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@material-symbols/font-400':
         specifier: ^0.21.2
