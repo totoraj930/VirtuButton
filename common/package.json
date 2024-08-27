@@ -1,0 +1,20 @@
+{
+  "name": "@virtu-button/common",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "author": "Reona Oshima(totoraj)",
+  "type": "module",
+  "main": "dist",
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js",
+    "./Plugin": "./dist/Plugin/index.js"
+  },
+  "scripts": {
+    "build": "rimraf ./dist && tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@material-symbols/font-400": "^0.21.2"
+  }
+}
