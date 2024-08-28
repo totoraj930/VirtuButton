@@ -14,11 +14,12 @@ type Props = {
   onClose: () => void;
 };
 export function CBInstanceEditor({
-  instance: originInstance,
+  instance: _instance,
   setter,
   onClose,
 }: Props) {
-  const [instance, setInstance] = useState(structuredClone(originInstance));
+  const [originInstance, setOriginInstance] = useState(_instance);
+  const [instance, setInstance] = useState(structuredClone(_instance));
   const hasChange = useMemo(() => {
     return JSON.stringify(originInstance) !== JSON.stringify(instance);
   }, [originInstance, instance]);
@@ -29,16 +30,13 @@ export function CBInstanceEditor({
   );
   const { showConfirm } = useModal();
 
-  useEffect(() => {
-    setInstance(structuredClone(originInstance));
-  }, [originInstance, setInstance]);
-
   const onKeydown = (event: KeyboardEvent) => {
     if (!instance) return;
     const key = event.key.toLowerCase();
     const withCtrl = event.ctrlKey || event.metaKey;
     if (key === 's' && withCtrl) {
       setter(instance);
+      setOriginInstance(instance);
     }
   };
 
@@ -63,6 +61,7 @@ export function CBInstanceEditor({
               size="with_icon"
               onClick={() => {
                 setter(instance);
+                setOriginInstance(instance);
                 // onClose();
               }}
               variant={hasChange ? 'default' : 'ghost'}
