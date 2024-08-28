@@ -1,0 +1,8 @@
+dist
+dist-*
+resources
+release
+node_modules
+tsconfig.json
+tsconfig.*.json
+README.md
