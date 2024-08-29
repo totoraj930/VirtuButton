@@ -9,10 +9,14 @@ import {
 } from '@/src/components/ui/dropdown-menu';
 import { Input } from '@/src/components/ui/input';
 import { ipcSend } from '@/src/ipcEvent';
-import { usePage, usePageItem, useSettings } from '@/src/store';
 import { cn } from '@/src/utils';
-import { getDefaultButton, getDefaultPage } from '@virtu-button/common/Plugin';
-import { useEffect, useState } from 'react';
+import {
+  getDefaultButton,
+  getDefaultPage,
+  PageItem,
+} from '@virtu-button/common/Plugin';
+import { useEffect, useMemo, useState } from 'react';
+import { useAsync } from 'react-use';
 import { CBDropdownMenuItems } from '../ButtonEditor/CBDropdownMenuItems';
 import { PageItemEditor } from '../PageItemEditor';
 import { PageItemView } from '../PageItemView';
@@ -24,10 +28,25 @@ type Props = {
   onClose?: () => void;
 };
 export function PageEditor({ pageIndex, onClose }: Props) {
-  const settings = useSettings();
   const { showConfirm } = useModal();
-  const page = usePage(settings.pageIndex);
   const [editPageItemId, setEditPageItemId] = useState<string | null>(null);
+  const [updateTime, setUpdateTime] = useState(Date.now());
+
+  const { value: page } = useAsync(async () => {
+    console.log('==== page ====');
+    return (await ipcSend('get:pages'))[pageIndex];
+  }, [pageIndex, updateTime]);
+
+  const items = useMemo(() => {
+    if (!page) return [];
+    return page.items.map((item) => {
+      return {
+        id: item.id,
+        ...item.viewProps,
+        layer: item.viewProps.zIndex,
+      };
+    });
+  }, [page]);
 
   useEffect(() => {
     if (editPageItemId) {
@@ -60,6 +79,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
                   pageId: page.id,
                   item: instance,
                 });
+                setUpdateTime(Date.now());
               }}
             />
             <DropdownMenuItem
@@ -67,6 +87,8 @@ export function PageEditor({ pageIndex, onClose }: Props) {
                 ipcSend('add:item', {
                   pageId: page.id,
                   item: getDefaultButton(),
+                }).then(() => {
+                  setUpdateTime(Date.now());
                 });
               }}
             >
@@ -154,6 +176,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
             });
             if (result) {
               await ipcSend('delete:page', page.id);
+              setUpdateTime(Date.now());
               // onClose?.();
             }
           }}
@@ -166,13 +189,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
         <Grid
           w={page.w}
           h={page.h}
-          items={page.items.map((item) => {
-            return {
-              id: item.id,
-              ...item.viewProps,
-              layer: item.viewProps.zIndex,
-            };
-          })}
+          items={items}
           handler={(event) => {
             if (event.name === 'ChangeItems') {
               const newPageItems = event.items.flatMap((item) => {
@@ -188,17 +205,30 @@ export function PageEditor({ pageIndex, onClose }: Props) {
               });
               ipcSend('edit:page', page.id, {
                 items: newPageItems,
+              }).then(() => {
+                setUpdateTime(Date.now());
               });
             }
           }}
-          renderer={(id) => (
-            <Item
-              id={id}
-              onOpenEditor={(buttonId) => {
-                setEditPageItemId(buttonId);
-              }}
-            />
-          )}
+          renderer={(id) => {
+            const item = page.items.find((v) => v.id === id);
+            return !item ? (
+              <></>
+            ) : (
+              <Item
+                id={id}
+                pageItem={item}
+                onOpenEditor={(buttonId) => {
+                  setEditPageItemId(buttonId);
+                }}
+                onDelete={(buttonId) => {
+                  ipcSend('delete:button', buttonId).then(() => {
+                    setUpdateTime(Date.now());
+                  });
+                }}
+              />
+            );
+          }}
         />
       </div>
       {editPageItemId && (
@@ -206,6 +236,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
           itemId={editPageItemId}
           onClose={() => {
             setEditPageItemId(null);
+            setUpdateTime(Date.now());
           }}
         />
       )}
@@ -215,10 +246,13 @@ export function PageEditor({ pageIndex, onClose }: Props) {
 
 type ItemProps = {
   id: string;
+  pageItem: PageItem;
   onOpenEditor: (buttonId: string) => void;
+  onDelete: (buttonId: string) => void;
 };
-function Item({ id, onOpenEditor }: ItemProps) {
-  const [pageItem, setter] = usePageItem(id);
+function Item({ id, pageItem, onOpenEditor, onDelete }: ItemProps) {
+  // const [pageItem, setter] = usePageItem(id);
+
   const { showConfirm } = useModal();
   const stopPropagationProps = {
     onMouseDown: (event: React.MouseEvent) => event.stopPropagation(),
@@ -291,7 +325,7 @@ function Item({ id, onOpenEditor }: ItemProps) {
               message: 'この操作は戻せません。本当に削除しますか？',
             });
             if (result) {
-              ipcSend('delete:button', id);
+              onDelete(id);
             }
           }}
         >
