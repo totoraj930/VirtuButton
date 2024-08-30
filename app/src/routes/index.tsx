@@ -74,6 +74,16 @@ export default function RouteIndex() {
           </DropdownMenuContent>
         </DropdownMenu>
 
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => {
+            navigate('settings');
+          }}
+        >
+          <MaterialIcon icon="settings" fill />
+        </Button>
+
         <DropdownMenu>
           <DropdownMenuTrigger variant="ghost" size="icon">
             <MaterialIcon icon="power_settings_new" />
