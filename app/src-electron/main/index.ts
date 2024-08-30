@@ -18,7 +18,7 @@ import { virtuButtonPages } from './Page';
 import { setSettings, settings } from './settings';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TITLE = `VirtuButton(β) ${app.getVersion()}`;
+export const TITLE = `VirtuButton(β) ${app.getVersion()}`;
 
 process.env.APP_ROOT = path.join(__dirname, '../..');
 process.env.APP_DIR = is.dev
@@ -110,6 +110,10 @@ async function createWindow() {
   tempWin.webContents.on('will-navigate', (e, url) => {
     if (url.startsWith('http')) shell.openExternal(url);
     e.preventDefault();
+  });
+
+  tempWin.webContents.on('page-title-updated', (e) => {
+    tempWin.setTitle(TITLE);
   });
 
   // Auto update
