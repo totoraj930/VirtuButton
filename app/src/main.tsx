@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 import './assets/base.css';
@@ -38,6 +38,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 function Root() {
   const modals = useAtomValue(aModalNodeView);
+  useEffect(() => {
+    document.body.classList.add('dark');
+  }, []);
   return (
     <>
       <RouterProvider router={router} />
