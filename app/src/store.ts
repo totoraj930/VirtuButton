@@ -112,6 +112,16 @@ export function usePage(index: number) {
   return pages[index] ?? null;
 }
 
+export function useCurrentPage() {
+  const settings = useSettings();
+  return settings.pages[settings.pageIndex];
+}
+
+export function usePageFromId(pageId?: string) {
+  const pages = usePages();
+  return pages.find((v) => v.id === pageId) ?? null;
+}
+
 export async function getPageItem(id: string) {
   const pages = await ipcSend('get:pages');
   let pageItem: PageItem | undefined;
@@ -127,7 +137,7 @@ export async function getPageItem(id: string) {
 }
 
 export function usePageItem(
-  id: string
+  id?: string
 ): [PageItem | null, (item: PageItem) => Promise<void>] {
   const pages = usePages();
   const [item, setItem] = useState<PageItem>();

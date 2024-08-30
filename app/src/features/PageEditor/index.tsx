@@ -13,10 +13,11 @@ import { cn } from '@/src/utils';
 import {
   getDefaultButton,
   getDefaultPage,
+  Page,
   PageItem,
 } from '@virtu-button/common/Plugin';
 import { useEffect, useMemo, useState } from 'react';
-import { useAsync } from 'react-use';
+import { useNavigate } from 'react-router-dom';
 import { CBDropdownMenuItems } from '../ButtonEditor/CBDropdownMenuItems';
 import { PageItemEditor } from '../PageItemEditor';
 import { PageItemView } from '../PageItemView';
@@ -25,17 +26,23 @@ import { Grid } from './Grid';
 
 type Props = {
   pageIndex: number;
+  page: Page;
   onClose?: () => void;
 };
-export function PageEditor({ pageIndex, onClose }: Props) {
+export function PageEditor({ pageIndex, page: _page, onClose }: Props) {
+  const navigate = useNavigate();
   const { showConfirm } = useModal();
   const [editPageItemId, setEditPageItemId] = useState<string | null>(null);
-  const [updateTime, setUpdateTime] = useState(Date.now());
+  const [page, setPage] = useState(structuredClone(_page));
 
-  const { value: page } = useAsync(async () => {
-    console.log('==== page ====');
-    return (await ipcSend('get:pages'))[pageIndex];
-  }, [pageIndex, updateTime]);
+  const updatePage = async () => {
+    const p = await ipcSend('get:page', { pageId: page.id });
+    if (p) setPage(p);
+  };
+  // const { value: page } = useAsync(async () => {
+  //   console.log('==== page ====');
+  //   return (await ipcSend('get:pages'))[pageIndex];
+  // }, [pageIndex, updateTime]);
 
   const items = useMemo(() => {
     if (!page) return [];
@@ -79,7 +86,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
                   pageId: page.id,
                   item: instance,
                 });
-                setUpdateTime(Date.now());
+                updatePage();
               }}
             />
             <DropdownMenuItem
@@ -88,7 +95,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
                   pageId: page.id,
                   item: getDefaultButton(),
                 }).then(() => {
-                  setUpdateTime(Date.now());
+                  updatePage();
                 });
               }}
             >
@@ -130,7 +137,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
       </div>
 
       <div className="p-2 flex items-center gap-4">
-        <p className="font-bold w-20">ページ: {pageIndex + 1}</p>
+        {/* <p className="font-bold w-20">ページ: {pageIndex + 1}</p> */}
         <div className="flex items-center gap-1">
           <label htmlFor="" className="flex">
             <MaterialIcon icon="width" />
@@ -144,7 +151,9 @@ export function PageEditor({ pageIndex, onClose }: Props) {
             onChange={(e) => {
               const num = Number.parseInt(e.target.value);
               if (!Number.isFinite(num) || num < 1 || num > 20) return;
-              ipcSend('edit:page', page.id, { w: num });
+              ipcSend('edit:page', page.id, { w: num }).then(() => {
+                updatePage();
+              });
             }}
           />
         </div>
@@ -161,7 +170,9 @@ export function PageEditor({ pageIndex, onClose }: Props) {
             onChange={(e) => {
               const num = Number.parseInt(e.target.value);
               if (!Number.isFinite(num)) return;
-              ipcSend('edit:page', page.id, { h: num });
+              ipcSend('edit:page', page.id, { h: num }).then(() => {
+                updatePage();
+              });
             }}
           />
         </div>
@@ -176,7 +187,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
             });
             if (result) {
               await ipcSend('delete:page', page.id);
-              setUpdateTime(Date.now());
+              updatePage();
               // onClose?.();
             }
           }}
@@ -206,7 +217,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
               ipcSend('edit:page', page.id, {
                 items: newPageItems,
               }).then(() => {
-                setUpdateTime(Date.now());
+                updatePage();
               });
             }
           }}
@@ -219,11 +230,12 @@ export function PageEditor({ pageIndex, onClose }: Props) {
                 id={id}
                 pageItem={item}
                 onOpenEditor={(buttonId) => {
-                  setEditPageItemId(buttonId);
+                  // setEditPageItemId(buttonId);
+                  navigate(`/edit/item/${buttonId}`);
                 }}
                 onDelete={(buttonId) => {
                   ipcSend('delete:button', buttonId).then(() => {
-                    setUpdateTime(Date.now());
+                    updatePage();
                   });
                 }}
               />
@@ -236,7 +248,7 @@ export function PageEditor({ pageIndex, onClose }: Props) {
           itemId={editPageItemId}
           onClose={() => {
             setEditPageItemId(null);
-            setUpdateTime(Date.now());
+            updatePage();
           }}
         />
       )}
