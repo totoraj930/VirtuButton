@@ -3,7 +3,6 @@ import { app, nativeTheme, shell } from 'electron';
 import path from 'node:path';
 import { basicFeaturesPlugin } from './built-in/basic-features';
 import { keyboardPlugin } from './built-in/keyboard';
-import { obsPlugin } from './built-in/obs';
 import { addPages } from './Page';
 import { addPlugins, initAllPlugin, initAllPluginCB } from './Plugin';
 import { loadUserPlugin } from './Plugin/loader';
@@ -35,15 +34,15 @@ export async function initApp() {
     {
       ...basicFeaturesPlugin,
       path: builtInPluginPath,
-    },
+    }
     // {
     //   ...discordPlugin,
     //   path: builtInPluginPath,
     // },
-    {
-      ...obsPlugin,
-      path: builtInPluginPath,
-    }
+    // {
+    //   ...obsPlugin,
+    //   path: builtInPluginPath,
+    // }
   );
 
   try {
