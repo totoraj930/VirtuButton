@@ -13,6 +13,7 @@ export let pluginInitProps: PluginInitProps | undefined;
 export const basicFeaturesPlugin: VirtuButtonPlugin = {
   schemaVersion: 1,
   id: 'built-in:basic',
+  version: '0.0.1',
   name: '基本機能(built-in)',
   description: `基本的な機能を提供するプラグインです。`,
   actions: [sleepAction, openAction, buttonStyleAction, pageAction],

@@ -40,14 +40,6 @@ export async function initApp() {
       ...basicFeaturesPlugin,
       path: builtInPluginPath,
     }
-    // {
-    //   ...discordPlugin,
-    //   path: builtInPluginPath,
-    // },
-    // {
-    //   ...obsPlugin,
-    //   path: builtInPluginPath,
-    // }
   );
 
   try {

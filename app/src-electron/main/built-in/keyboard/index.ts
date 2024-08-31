@@ -27,6 +27,7 @@ export const keyboardPlugin: VirtuButtonPlugin = {
   schemaVersion: 1,
   id: 'built-in:keyboard',
   name: 'キーボード入力(built-in)',
+  version: '0.0.1',
   description: 'キーボード入力をエミュレートするプラグインです。',
   actions,
   events: [],
