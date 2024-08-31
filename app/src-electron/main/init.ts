@@ -11,6 +11,11 @@ import { settings } from './settings';
 
 const USER_DATA = app.getPath('userData');
 export async function initApp() {
+  // PC起動時の動作を更新
+  app.setLoginItemSettings({
+    openAtLogin: settings.openAtLogin,
+  });
+
   // userDataをexeのあるディレクトリに変更(Cドライブを汚したくない)
   app.setPath('userData', path.dirname(app.getPath('exe')));
   console.log('exe:', path.dirname(app.getPath('exe')));
