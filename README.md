@@ -7,7 +7,7 @@
 
 [VirtuButton/releases](https://github.com/totoraj930/VirtuButton/releases)
 
-![サムネイル](./docs/thumbnail.png)
+![サムネイル](./assets/thumbnail.png)
 
 スマホなどの外部デバイスからPCを操作できるようにするアプリケーションです。
 
@@ -24,6 +24,8 @@ VirtuButtonではプラグインを追加することで他のアプリケーシ
 プラグインはTypeScriptで簡単に作ることができるようになっています。(Node.js上で動作します)
 
 詳細なドキュメントなどは随時追加予定です。
+
+![プラグインの追加方法](./assets/plugin-dir.png)
 
 ### 現状あるプラグイン
 
