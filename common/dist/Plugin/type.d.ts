@@ -49,7 +49,7 @@ export type PluginInitProps = {
  */
 export type VirtuButtonPlugin = {
     /**
-     * スキーマのバージョン
+     * スキーマのバージョン(固定)
      */
     schemaVersion: 1;
     /**
@@ -61,6 +61,11 @@ export type VirtuButtonPlugin = {
      * プラグインの表示名
      */
     name: string;
+    /**
+     * プラグインのバージョン
+     * semver(セマンティック　バージョニング)で表記すること
+     */
+    version: string;
     /**
      * プラグインの説明
      * マークダウンが使えます
