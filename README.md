@@ -27,7 +27,7 @@ VirtuButtonではプラグインを追加することで他のアプリケーシ
 
 ### 現状あるプラグイン
 
-- OBSプラグイン(v0.0.3時点ではビルトインだけど分離するかも)
+- [OBSプラグイン](https://github.com/totoraj930/VB-OBS-Plugin)
 - [Discordプラグイン](https://github.com/totoraj930/VB-DiscordPlugin)(導入方法がちょっと難しい)
 
 ## 開発
