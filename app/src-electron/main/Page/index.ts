@@ -127,7 +127,6 @@ export function addPage(page: Page) {
   updatePageSettings();
   console.log('addPage');
   sendMainEvent('update:pages', virtuButtonPages);
-  wsEmitCurrentPage();
   return virtuButtonPages.length - 1;
 }
 
