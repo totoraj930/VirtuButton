@@ -10,7 +10,7 @@ export const zVirtuButtonPlugin = z.object({
     schemaVersion: z.literal(1),
     id: z.string(),
     name: z.string(),
-    version: z.string(),
+    version: z.string().catch('0.0.0'),
     description: z.string().catch('説明がありません'),
     init: zEmitter.catch(() => { }),
     events: z.array(zPluginEvent),
