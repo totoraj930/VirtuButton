@@ -52,6 +52,7 @@ export default function RouteSettings() {
             ipcSend('edit:settings', {
               server: settings.server,
               openAtLogin: settings.openAtLogin,
+              startMinimized: settings.startMinimized,
             }).then(() => {
               navigate('/');
             });
@@ -71,7 +72,7 @@ export default function RouteSettings() {
           <p>{appTitle}</p>
           <p>
             <a
-              className="text-sky-500 flex gap-1 items-center"
+              className="text-sky-500 inline-flex gap-1 items-center"
               href="https://github.com/totoraj930/VirtuButton/"
             >
               GitHubを開く
@@ -116,6 +117,21 @@ export default function RouteSettings() {
             onCheckedChange={(value) => {
               updateSettings({
                 openAtLogin: value,
+              });
+            }}
+          />
+        </div>
+
+        <div className={s.section}>
+          <label className={s.label} htmlFor={baseId + 'startMinimized'}>
+            最小化した状態で起動する
+          </label>
+          <Switch
+            id={baseId + 'startMinimized'}
+            checked={settings.startMinimized}
+            onCheckedChange={(value) => {
+              updateSettings({
+                startMinimized: value,
               });
             }}
           />

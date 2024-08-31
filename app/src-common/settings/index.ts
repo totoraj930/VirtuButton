@@ -23,6 +23,7 @@ export const zSettings = z.object({
   windowPos: zWindowPos.catch(zWindowPos.parse({})),
   server: zServer.catch(zServer.parse({})),
   openAtLogin: z.boolean().catch(false),
+  startMinimized: z.boolean().catch(false),
   pageIndex: z.number().catch(0),
   pages: z
     .array(zPage)
