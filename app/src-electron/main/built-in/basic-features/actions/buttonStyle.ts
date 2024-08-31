@@ -1,9 +1,10 @@
-import { editPageItem, getPageItem } from '@/src-electron/main/Page';
+import { getPageItem } from '@/src-electron/main/Page';
 import {
   BooleanField,
   NumberField,
   PluginAction,
 } from '@virtu-button/common/Plugin';
+import { pluginInitProps } from '..';
 
 export const buttonStyleAction: PluginAction<{
   index: NumberField;
@@ -30,18 +31,11 @@ export const buttonStyleAction: PluginAction<{
     if (!payload.from.buttonId) return false;
     const button = getPageItem(payload.from.buttonId);
     if (!button) return false;
-    const result = structuredClone(button);
+    let index = values.index - 1;
     if (values.forceNext) {
-      result.viewProps.styleIndex =
-        (button.viewProps.styleIndex + 1) % button.styles.length;
-    } else {
-      const targetIndex = values.index - 1;
-      result.viewProps.styleIndex = Math.min(
-        button.styles.length - 1,
-        targetIndex
-      );
+      index = button.viewProps.styleIndex + 1;
     }
-    editPageItem(result);
-    return result.viewProps.styleIndex;
+    pluginInitProps?.updateStyleIndex(button.id, index);
+    return true;
   },
 };

@@ -6,7 +6,6 @@ import fs from 'node:fs';
 import { networkInterfaces } from 'node:os';
 import path from 'node:path';
 import { sendMainEvent } from './ipcEvent/mainEvent';
-import { wsEmitCurrentPage } from './Server/ws';
 
 let saveTimer: NodeJS.Timeout | undefined = undefined;
 
@@ -120,7 +119,6 @@ export function setSettings(setter: Setter, noSave: boolean = false) {
   settings = newSettings;
   if (!noSave) saveSettings(settings);
   sendMainEvent('update:settings', settings);
-  wsEmitCurrentPage();
   return settings;
 }
 

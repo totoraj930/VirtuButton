@@ -3,7 +3,7 @@ import {
   ToServerEvent,
   zToServerEvent,
 } from '@/src-common/ws/schema';
-import { PageItem } from '@virtu-button/common/Plugin';
+import { ButtonViewProps, PageItem } from '@virtu-button/common/Plugin';
 import { Context } from 'hono';
 import { WSContext, WSEvents } from 'hono/ws';
 import { basicFeaturesPlugin } from '../built-in/basic-features';
@@ -64,6 +64,19 @@ export function wsEmitButton(item: PageItem) {
   wsEmitAll({
     name: 'update:item',
     data: toPageItemSerialized(item),
+  });
+}
+
+export function wsEmitItemViewProps(
+  id: string,
+  viewProps: Partial<ButtonViewProps>
+) {
+  wsEmitAll({
+    name: 'update:ivp',
+    data: {
+      id,
+      ...viewProps,
+    },
   });
 }
 

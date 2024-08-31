@@ -26,6 +26,7 @@ export class WsClient {
   } = {
     'update:item': new Set(),
     'update:view': new Set(),
+    'update:ivp': new Set(),
   };
 
   constructor(ops?: WsClientOps) {
