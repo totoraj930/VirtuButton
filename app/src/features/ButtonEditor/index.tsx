@@ -20,17 +20,14 @@ type Props = {
   onClose: () => void;
 };
 
-export function ButtonEditor({ button: originButton, setter, onClose }: Props) {
-  const [button, setButton] = useState(structuredClone(originButton));
+export function ButtonEditor({ button: _button, setter, onClose }: Props) {
+  const [prevButton, setPrevButton] = useState(_button);
+  const [button, setButton] = useState(structuredClone(_button));
 
   const { showConfirm } = useModal();
   const hasChange = useMemo(() => {
-    return JSON.stringify(originButton) !== JSON.stringify(button);
-  }, [originButton, button]);
-
-  useEffect(() => {
-    setButton(structuredClone(originButton));
-  }, [originButton, setButton]);
+    return JSON.stringify(prevButton) !== JSON.stringify(button);
+  }, [prevButton, button]);
 
   const onKeydown = (event: KeyboardEvent) => {
     if (!button) return;
@@ -38,6 +35,7 @@ export function ButtonEditor({ button: originButton, setter, onClose }: Props) {
     const withCtrl = event.ctrlKey || event.metaKey;
     if (key === 's' && withCtrl) {
       setter(button);
+      setPrevButton(button);
     }
   };
 
@@ -63,6 +61,7 @@ export function ButtonEditor({ button: originButton, setter, onClose }: Props) {
               size="with_icon"
               onClick={() => {
                 setter(button);
+                setPrevButton(button);
                 // onClose();
               }}
               variant={hasChange ? 'default' : 'ghost'}

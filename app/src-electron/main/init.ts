@@ -3,7 +3,6 @@ import { app, nativeTheme, shell } from 'electron';
 import path from 'node:path';
 import { basicFeaturesPlugin } from './built-in/basic-features';
 import { keyboardPlugin } from './built-in/keyboard';
-import { obsPlugin } from './built-in/obs';
 import { addPages } from './Page';
 import { addPlugins, initAllPlugin, initAllPluginCB } from './Plugin';
 import { loadUserPlugin } from './Plugin/loader';
@@ -12,6 +11,11 @@ import { settings } from './settings';
 
 const USER_DATA = app.getPath('userData');
 export async function initApp() {
+  // PC起動時の動作を更新
+  app.setLoginItemSettings({
+    openAtLogin: settings.openAtLogin,
+  });
+
   // userDataをexeのあるディレクトリに変更(Cドライブを汚したくない)
   app.setPath('userData', path.dirname(app.getPath('exe')));
   console.log('exe:', path.dirname(app.getPath('exe')));
@@ -34,14 +38,6 @@ export async function initApp() {
     },
     {
       ...basicFeaturesPlugin,
-      path: builtInPluginPath,
-    },
-    // {
-    //   ...discordPlugin,
-    //   path: builtInPluginPath,
-    // },
-    {
-      ...obsPlugin,
       path: builtInPluginPath,
     }
   );

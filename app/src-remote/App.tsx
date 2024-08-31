@@ -33,9 +33,11 @@ function App() {
 
   useEffect(() => {
     const off1 = wsClient.on('update:view', (data) => {
+      // console.log('update:view');
       setPage(data);
     });
     const off2 = wsClient.on('update:item', (data) => {
+      // console.log('update:item');
       setPage(
         produce((prev) => {
           if (!prev) return;
@@ -49,9 +51,30 @@ function App() {
         })
       );
     });
+    const off3 = wsClient.on('update:ivp', (data) => {
+      // console.log('update:itemViewProps');
+      setPage((prev) => {
+        if (!prev) return prev;
+        const newPage = structuredClone(prev);
+        const { id: itemId, temp, ...props } = data;
+        for (const item of newPage.items) {
+          if (item.id !== itemId) continue;
+          item.viewProps = {
+            ...item.viewProps,
+            ...props,
+            temp: {
+              ...item.viewProps.temp,
+              ...temp,
+            },
+          };
+        }
+        return newPage;
+      });
+    });
     if (wsClient.status === undefined) {
       // wsClient.connect(`ws://${location.host}/ws`);
-      wsClient.connect(`ws://${location.hostname}:51030/ws`);
+      const port = location.href.match(/:([0-9]+)/)?.[1] ?? 51030;
+      wsClient.connect(`ws://${location.hostname}:${port}/ws`);
     }
 
     const onTouchMove = (event: TouchEvent) => {
@@ -65,6 +88,7 @@ function App() {
     return () => {
       off1();
       off2();
+      off3();
       document.removeEventListener('touchmove', onTouchMove);
     };
   }, [setPage]);

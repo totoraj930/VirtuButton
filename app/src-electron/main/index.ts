@@ -18,7 +18,7 @@ import { virtuButtonPages } from './Page';
 import { setSettings, settings } from './settings';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TITLE = `VirtuButton(β) ${app.getVersion()}`;
+export const TITLE = `VirtuButton(β) ${app.getVersion()}`;
 
 process.env.APP_ROOT = path.join(__dirname, '../..');
 process.env.APP_DIR = is.dev
@@ -50,7 +50,7 @@ export let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, '../preload/index.mjs');
 const indexHtml = path.join(RENDERER_DIST, 'index.html');
 
-async function createWindow() {
+async function createWindow(routePath: string = '/') {
   const ops = settings.windowPos;
   const tempWin = new BrowserWindow({
     title: TITLE,
@@ -91,13 +91,11 @@ async function createWindow() {
     sendMainEvent('update:pages', virtuButtonPages);
   });
 
+  openRoutePath(tempWin, routePath);
+
   if (VITE_DEV_SERVER_URL) {
-    // #298
-    tempWin.loadURL(VITE_DEV_SERVER_URL);
     process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
     tempWin.webContents.openDevTools();
-  } else {
-    tempWin.loadFile(indexHtml);
   }
 
   // Make all links open with the browser, not with the application
@@ -112,8 +110,13 @@ async function createWindow() {
     e.preventDefault();
   });
 
+  tempWin.webContents.on('page-title-updated', (e) => {
+    tempWin.setTitle(TITLE);
+  });
+
   // Auto update
   // update(win)
+  return tempWin;
 }
 
 app.whenReady().then(() => {
@@ -131,6 +134,12 @@ app.whenReady().then(() => {
       label: TITLE,
       click: () => {
         openOrFocus();
+      },
+    },
+    {
+      label: '設定',
+      click: () => {
+        openOrFocus('/settings');
       },
     },
     {
@@ -152,9 +161,9 @@ app.whenReady().then(() => {
   ]);
   appIcon.setContextMenu(contextMenu);
 
-  // if (settings.windowPos.isShow) {
-  createWindow();
-  // }
+  if (!settings.startMinimized) {
+    createWindow();
+  }
 });
 
 app.on('window-all-closed', () => {
@@ -191,14 +200,23 @@ export function appQuit() {
   app.exit(0);
 }
 
-function openOrFocus() {
+function openRoutePath(bWindow: BrowserWindow, routePath: string) {
+  if (VITE_DEV_SERVER_URL) {
+    bWindow.loadURL(VITE_DEV_SERVER_URL + '#' + routePath);
+  } else {
+    bWindow.loadFile(indexHtml, { hash: routePath });
+  }
+}
+
+function openOrFocus(routePath = '/') {
   if (win) {
     if (win.isMinimized()) {
       win.restore();
     }
     win.focus();
+    openRoutePath(win, routePath);
   } else {
-    createWindow();
+    createWindow(routePath);
   }
 }
 

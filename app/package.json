@@ -1,6 +1,6 @@
 {
   "name": "virtu-button",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "バーチュボタン",
   "main": "dist-electron/main/index.js",
   "author": "Reona Oshima (totoraj)",
@@ -35,6 +35,7 @@
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@virtu-button/common": "workspace:*",
     "class-variance-authority": "^0.7.0",
@@ -51,6 +52,7 @@
     "obs-websocket-js": "^5.0.5",
     "qrcode.react": "^3.1.0",
     "react-error-boundary": "^4.0.13",
+    "react-router-dom": "^6.26.1",
     "react-use": "^17.5.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",

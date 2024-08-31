@@ -1,6 +1,6 @@
 import { IPCEventHandlers } from '@/src-common/ipcEvent';
 import { clipboard } from 'electron';
-import { appQuit, appRelaunch } from '..';
+import { appQuit, appRelaunch, TITLE } from '..';
 import { openAppDir } from '../init';
 import {
   addPage,
@@ -27,6 +27,7 @@ import { editSettings, getRemoteURL, settings } from '../settings';
 export const ipcEventHandlers: IPCEventHandlers = {
   'app:relaunch': () => appRelaunch(),
   'app:quit': () => appQuit(),
+  'get:title': () => TITLE,
   'get:settings': () => settings,
   'edit:settings': (_, values) => editSettings(values),
   'get:remoteURL': () => getRemoteURL(),

@@ -34,6 +34,10 @@ export type IPCEventParams = {
     params: [];
     result: void;
   };
+  'get:title': {
+    params: [];
+    result: string;
+  };
   'get:settings': {
     params: [];
     result: Settings;

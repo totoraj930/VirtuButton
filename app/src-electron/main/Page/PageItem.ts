@@ -14,7 +14,11 @@ import {
   virtuButtonPages,
 } from '.';
 import { sendMainEvent } from '../ipcEvent/mainEvent';
-import { wsEmitButton, wsEmitCurrentPage } from '../Server/ws';
+import {
+  wsEmitButton,
+  wsEmitCurrentPage,
+  wsEmitItemViewProps,
+} from '../Server/ws';
 
 /**
  * 全Pageに存在するPageItemを全て返す
@@ -123,7 +127,7 @@ export function editPageItemViewProps(
   });
   updatePageSettings();
   sendMainEvent('update:pages', virtuButtonPages);
-  wsEmitCurrentPage();
+  wsEmitItemViewProps(itemId, _props);
 }
 
 /**

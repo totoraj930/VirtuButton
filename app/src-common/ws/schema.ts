@@ -1,4 +1,5 @@
 import {
+  zButtonViewProps,
   zPageItemSerialized,
   zPageSerialized,
 } from '@virtu-button/common/Plugin';
@@ -8,6 +9,11 @@ import { z } from 'zod';
 export const zUpdateItemEvent = z.object({
   name: z.literal('update:item'),
   data: zPageItemSerialized,
+});
+
+export const zUpdateItemViewPropsEvent = z.object({
+  name: z.literal('update:ivp'),
+  data: zButtonViewProps.partial().extend({ id: z.string() }),
 });
 
 export const zUpdatePageEvent = z.object({
@@ -20,7 +26,11 @@ export const zUpdateViewEvent = z.object({
   data: zPageSerialized,
 });
 
-export const zToClientEvent = z.union([zUpdateViewEvent, zUpdateItemEvent]);
+export const zToClientEvent = z.union([
+  zUpdateViewEvent,
+  zUpdateItemEvent,
+  zUpdateItemViewPropsEvent,
+]);
 export type ToClientEvent = z.infer<typeof zToClientEvent>;
 
 // client -> server

@@ -68,6 +68,7 @@ export function Grid({
 
   useEffect(() => {
     setItems(structuredClone(_items));
+    console.log('=== items ===');
   }, [_items]);
 
   const editEnd = () => {

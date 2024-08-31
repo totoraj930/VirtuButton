@@ -112,8 +112,32 @@ export function usePage(index: number) {
   return pages[index] ?? null;
 }
 
+export function useCurrentPage() {
+  const settings = useSettings();
+  return settings.pages[settings.pageIndex];
+}
+
+export function usePageFromId(pageId?: string) {
+  const pages = usePages();
+  return pages.find((v) => v.id === pageId) ?? null;
+}
+
+export async function getPageItem(id: string) {
+  const pages = await ipcSend('get:pages');
+  let pageItem: PageItem | undefined;
+  pages: for (const page of pages) {
+    for (const item of page.items) {
+      if (item.id === id) {
+        pageItem = item;
+        break pages;
+      }
+    }
+  }
+  return pageItem;
+}
+
 export function usePageItem(
-  id: string
+  id?: string
 ): [PageItem | null, (item: PageItem) => Promise<void>] {
   const pages = usePages();
   const [item, setItem] = useState<PageItem>();

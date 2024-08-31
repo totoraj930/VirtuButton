@@ -7,6 +7,7 @@ export declare const zVirtuButtonPlugin: z.ZodObject<{
     schemaVersion: z.ZodLiteral<1>;
     id: z.ZodString;
     name: z.ZodString;
+    version: z.ZodString;
     description: z.ZodCatch<z.ZodString>;
     init: z.ZodCatch<z.ZodFunction<z.ZodTuple<[], z.ZodUnknown>, z.ZodUnknown>>;
     events: z.ZodArray<z.ZodObject<{
@@ -3399,6 +3400,7 @@ export declare const zVirtuButtonPlugin: z.ZodObject<{
     id: string;
     description: string;
     schemaVersion: 1;
+    version: string;
     init: (...args: unknown[]) => unknown;
     events: {
         name: string;
@@ -3947,6 +3949,7 @@ export declare const zVirtuButtonPlugin: z.ZodObject<{
     name: string;
     id: string;
     schemaVersion: 1;
+    version: string;
     events: {
         name: string;
         id: string;
